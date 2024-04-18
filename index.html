@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+    <head>
+        <title>Encriptador</title>
+        <link rel="stylesheet" href="styles.css" />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <header>
+            <h1>Encriptador</h1>
+        </header>
+        <div class="container">
+            <div class="encriptador-container">
+                <textarea id="enter-text" class="enter-text" placeholder="Ingrese texto aqui"></textarea>
+                <div class="info-container">
+                    <img src="./src/icons/bi_exclamation-circle-fill.svg"/>
+                    <span class="info-text">Solo letras minúsculas y sin acentos</span>
+                </div>
+                <div class="btn-container">
+                    <button onclick="btnEncriptarAction()" id="btn-encriptar">Encriptar</button>
+                    <button id="btn-desencriptar">Desencriptar</button>
+                </div>
+            </div>
+            <div class="result-container">
+                <p id="cipher-result" class="results"></p>
+                <img id="no-message-avatar" src="./src/images/Doll.svg" alt="">
+                <p id="no-message-1">Ningún mensaje fue encontrado</p>
+                <p id="no-message-2">Ingresa el texto que deseas encriptar o desencriptar</p>
+            </div>
+        </div>
+    </body>
+    <script src="script.js"></script>
+</html>
