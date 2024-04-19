@@ -1,4 +1,6 @@
-function cifrarCesar(texto, desplazamiento) {
+let cipherState = false;
+
+function cifrar(texto, desplazamiento) {
     var textoCifrado = "";
     for (var i = 0; i < texto.length; i++) {
       var char = texto[i];
@@ -13,29 +15,69 @@ function cifrarCesar(texto, desplazamiento) {
       }
     }
     return textoCifrado;
-  }
-  
-
-function btnEncriptarAction() {
-    const textArea = document.getElementById("enter-text");
-    const cipherResultP = document.getElementById("cipher-result");
-    const text = textArea.value;
-    
-    if (text === '') return;
-
-    const cipherText = cifrarCesar(text, 5);
-    cipherResultP.textContent = cipherText;
-    textArea.value = '';
-    removeItems()
-
 }
 
-function removeItems() {
-    const avatar = document.getElementById("no-message-avatar");
-    const noMessageInfo1 = document.getElementById("no-message-1");
-    const noMessageInfo2 = document.getElementById("no-message-2");
+function descifrar(textoCifrado, desplazamiento) {
+  return cifrar(textoCifrado, (26 - desplazamiento) % 26);
+}
 
-    avatar.remove();
-    noMessageInfo1.remove();
-    noMessageInfo2.remove();
+function btnEncriptarCallback() {
+    const textArea = document.getElementById("enter-text");
+    const cipherResultP = document.getElementById("cipher-result");
+    if (textArea.value === '' && cipherResultP.textContent === '') return;
+    if(textArea.value !== '' && cipherState) {
+      changeState();
+    }
+    if(cipherState) return;
+    const text = textArea.value === '' ? cipherResultP.textContent : textArea.value;  
+    const cipherText = cifrar(text, 5);
+    cipherResultP.textContent = cipherText;
+    textArea.value = '';
+    modifyStyleContainer();
+    removeElement("no-message-1");
+    removeElement("no-message-2");
+    removeElement("no-message-avatar");
+    showElement("btn-copiar");
+    changeState();
+}
+
+function btnDesencriptarCallback() {
+  if(!cipherState) return;
+  const cipherResultP = document.getElementById("cipher-result");
+  let texto = cipherResultP.textContent;
+  texto = descifrar(texto, 5);
+  cipherResultP.textContent = texto;
+
+  changeState();
+}
+
+function changeState() {
+  cipherState = !cipherState;
+}
+
+async function copy() {
+  const cipherResultP = document.getElementById("cipher-result");
+  const texto = cipherResultP.textContent;
+  try {
+    await navigator.clipboard.writeText(texto);
+    console.log('Contenido copiado al portapapeles');
+  } catch (err) {
+    console.error('Error al copiar: ', err);
+  }
+}
+
+function removeElement(id) {
+    const element = document.getElementById(id);
+    if (element == null) return;
+    element.remove();
+}
+
+function modifyStyleContainer() {
+  const container = document.getElementById("result-container");
+  container.style.justifyContent = "space-between"
+}
+
+function showElement(id) {
+  const element = document.getElementById(id);
+  element.style.display = "block";
 }
